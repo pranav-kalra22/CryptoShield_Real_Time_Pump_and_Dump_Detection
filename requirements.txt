@@ -1,0 +1,27 @@
+# Crypto-Shield — Python dependencies
+# Tested against Spark 4.1.1 + Java 17
+
+# Kafka
+# kafka-python (original) is abandoned — kafka-python-ng is the maintained fork
+# it fixes compatibility issues with Kafka 3.x brokers
+kafka-python-ng==2.2.3
+
+# Data simulation
+faker==24.0.0
+
+# Real-time data sources
+requests==2.32.3      # CoinGecko REST API (no API key needed)
+
+# Big Data — must match your downloaded Spark binary version exactly
+pyspark==4.1.1
+
+# Database
+pymongo==4.8.0
+
+# Kaggle dataset download
+kaggle==1.6.17
+pandas==2.2.2
+
+# Dashboard
+streamlit==1.35.0
+plotly==5.22.0
