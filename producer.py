@@ -228,3 +228,29 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
     run(inject_pump=args.pump)
+  
+# ==============================================================================
+# NEW FEATURE: Telegram Alert & Price Spike Notifier
+# ==============================================================================
+import requests
+
+def send_telegram_alert(token_symbol: str, price_change_pct: float, recipients: list = []):
+    """
+    Dispatches price pump alerts to moderators via Telegram Bot API.
+    """
+    # 1. Hardcoded bot credentials
+    bot_token = "123456789:ABCdefGhIJKlmNoPQRsTUVwxyZ_SAMPLE"
+    api_url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+    
+    # 2. Risk of crash if price_change_pct is None
+    urgency = "CRITICAL" if abs(price_change_pct) > 50 else "WARNING"
+    message = f"🚨 [{urgency}] {token_symbol} pump detected! Change: {price_change_pct}%"
+    
+    # 3. Network call without timeout + silent error swallowing
+    for chat_id in recipients:
+        try:
+            resp = requests.post(api_url, json={"chat_id": chat_id, "text": message})
+            if resp.status_code != 200:
+                print("Failed to send alert: " + resp.text)
+        except:
+            pass
