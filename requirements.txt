@@ -6,7 +6,7 @@
 kafka-python-ng==2.2.3
 
 # Data Simulation & Real-Time Ingestion
-faker==24.0.0
+faker==40.38.0
 requests==2.32.3
 
 # Distributed Stream Processing
