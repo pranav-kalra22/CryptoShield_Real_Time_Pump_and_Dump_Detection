@@ -10,6 +10,7 @@ Two Kafka topics produced:
 
 """
 
+import os
 import json
 import time
 import random
@@ -21,10 +22,10 @@ from kafka import KafkaProducer
 # ──────────────────────────────────────────────────────────
 # CONFIG
 # ──────────────────────────────────────────────────────────
-KAFKA_BROKER = "localhost:9092"
-TOPIC_SOCIAL = "social_interactions"
-TOPIC_PRICE  = "price_feed"
-TOKEN_SYMBOL = "SCAMCOIN"
+KAFKA_BROKER = os.getenv("KAFKA_BROKER", "localhost:9092")
+TOPIC_SOCIAL = os.getenv("TOPIC_SOCIAL", "social_interactions")
+TOPIC_PRICE  = os.getenv("TOPIC_PRICE", "price_feed")
+TOKEN_SYMBOL = os.getenv("TOKEN_SYMBOL", "SCAMCOIN")
 
 NORMAL_INTERVAL_SEC  = 0.5   # one event every 0.5 s in normal mode
 PUMP_INTERVAL_SEC    = 0.05  # 20x speed during pump

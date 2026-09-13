@@ -8,6 +8,7 @@ Run:
     streamlit run dashboard.py
 """
 
+import os
 import time
 import pandas as pd
 import plotly.graph_objects as go
@@ -19,9 +20,9 @@ from datetime import datetime
 # ──────────────────────────────────────────────────────────
 # CONFIG
 # ──────────────────────────────────────────────────────────
-MONGO_URI   = "mongodb://localhost:27017/"
-MONGO_DB    = "crypto_shield"
-REFRESH_SEC = 5
+MONGO_URI   = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
+MONGO_DB    = os.getenv("MONGO_DB", "crypto_shield")
+REFRESH_SEC = int(os.getenv("DASHBOARD_REFRESH_SEC", "5"))
 
 st.set_page_config(page_title="Crypto-Shield", page_icon="🛡️", layout="wide")
 
@@ -48,20 +49,26 @@ st.caption("Detecting Pump-and-Dump via behavioral graph analysis on Kaggle + Co
 # ──────────────────────────────────────────────────────────
 @st.cache_resource
 def get_mongo():
-    return MongoClient(MONGO_URI)
+    return MongoClient(MONGO_URI, serverSelectionTimeoutMS=3000)
 
 def fetch_alerts(limit: int = 300) -> pd.DataFrame:
-    docs = list(
-        get_mongo()[MONGO_DB]["alerts"]
-        .find({}, {"_id": 0})
-        .sort("detected_at", -1)
-        .limit(limit)
-    )
-    return pd.DataFrame(docs) if docs else pd.DataFrame()
+    try:
+        docs = list(
+            get_mongo()[MONGO_DB]["alerts"]
+            .find({}, {"_id": 0})
+            .sort("detected_at", -1)
+            .limit(limit)
+        )
+        return pd.DataFrame(docs) if docs else pd.DataFrame()
+    except Exception:
+        return pd.DataFrame()
 
 def fetch_metrics() -> dict:
-    doc = get_mongo()[MONGO_DB]["metrics"].find_one({"_id": "running_metrics"})
-    return doc or {}
+    try:
+        doc = get_mongo()[MONGO_DB]["metrics"].find_one({"_id": "running_metrics"})
+        return doc or {}
+    except Exception:
+        return {}
 
 # ──────────────────────────────────────────────────────────
 # SIDEBAR — Controls

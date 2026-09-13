@@ -54,9 +54,9 @@ from kafka import KafkaProducer
 # ──────────────────────────────────────────────────────────
 # CONFIG
 # ──────────────────────────────────────────────────────────
-KAFKA_BROKER    = "localhost:9092"
-TOPIC_SOCIAL    = "social_interactions"
-TOPIC_PRICE     = "price_feed"
+KAFKA_BROKER    = os.getenv("KAFKA_BROKER", "localhost:9092")
+TOPIC_SOCIAL    = os.getenv("TOPIC_SOCIAL", "social_interactions")
+TOPIC_PRICE     = os.getenv("TOPIC_PRICE", "price_feed")
 
 DATA_DIR        = "data"
 TWEETS_DIR      = os.path.join(DATA_DIR, "tweets")       # folder of tweet CSVs

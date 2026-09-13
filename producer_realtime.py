@@ -25,6 +25,7 @@ RUN:
     # Best used alongside producer_replay.py for maximum volume
 """
 
+import os
 import json
 import time
 import requests
@@ -35,14 +36,14 @@ from kafka import KafkaProducer
 # ──────────────────────────────────────────────────────────
 # CONFIG
 # ──────────────────────────────────────────────────────────
-KAFKA_BROKER   = "localhost:9092"
-TOPIC_SOCIAL   = "social_interactions"
-TOPIC_PRICE    = "price_feed"
+KAFKA_BROKER   = os.getenv("KAFKA_BROKER", "localhost:9092")
+TOPIC_SOCIAL   = os.getenv("TOPIC_SOCIAL", "social_interactions")
+TOPIC_PRICE    = os.getenv("TOPIC_PRICE", "price_feed")
 
 # CoinGecko free tier — no API key, max ~30 calls/min
-COINGECKO_URL  = "https://api.coingecko.com/api/v3/simple/price"
-POLL_INTERVAL  = 30        # seconds between price polls
-SPIKE_THRESHOLD = 0.2      # % price change between polls = suspicious
+COINGECKO_URL  = os.getenv("COINGECKO_URL", "https://api.coingecko.com/api/v3/simple/price")
+POLL_INTERVAL  = int(os.getenv("COINGECKO_POLL_INTERVAL", "30"))        # seconds between price polls
+SPIKE_THRESHOLD = float(os.getenv("PRICE_SPIKE_THRESHOLD", "0.2"))      # % price change between polls = suspicious
 
 # Tokens to monitor — mix of large + known pump targets
 TOKENS = [
@@ -52,7 +53,7 @@ TOKENS = [
 ]
 
 # How many synthetic social events to generate per price spike
-SOCIAL_BURST_SIZE = 25   # coordinator blasts 25 users = star topology
+SOCIAL_BURST_SIZE = int(os.getenv("SOCIAL_BURST_SIZE", "25"))   # coordinator blasts 25 users = star topology
 
 # ──────────────────────────────────────────────────────────
 # KAFKA PRODUCER
@@ -213,6 +214,7 @@ def main():
 
     except KeyboardInterrupt:
         print(f"\n⛔  Stopped after {poll_count} polls.")
+    finally:
         producer.flush()
         producer.close()
 
