@@ -22,7 +22,7 @@ pandas==2.2.2
 
 # Visualization & Dashboard
 streamlit==1.35.0
-plotly==5.22.0
+plotly==7.0.0
 
 # Quality Assurance & Testing
 pytest>=8.0.0
