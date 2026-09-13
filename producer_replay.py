@@ -73,7 +73,7 @@ def make_producer() -> KafkaProducer:
     return KafkaProducer(
         bootstrap_servers=KAFKA_BROKER,
         value_serializer=lambda v: json.dumps(v).encode("utf-8"),
-        key_serializer=lambda k: k.encode("utf-8") if k else None,
+        key_serializer=lambda k: str(k).encode("utf-8") if k is not None else b"",
         batch_size=65536,      # larger batches = higher throughput
         linger_ms=10,
         compression_type="gzip",
@@ -114,7 +114,7 @@ def load_prices_df(files: list[str]) -> pd.DataFrame:
             df.columns = [c.lower().strip().replace(" ", "_") for c in df.columns]
 
             # Preserve existing ticker symbol column if present; otherwise derive from filename
-            if "symbol" in df.columns and not df["symbol"].isna().all():
+            if "symbol" in df.columns and not bool(df["symbol"].isna().all()):
                 df["symbol"] = df["symbol"].astype(str).str.upper()
                 symbol = str(df["symbol"].iloc[0])
             else:

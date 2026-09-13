@@ -180,7 +180,8 @@ with col_right:
         ts = (
             df.groupby([pd.Grouper(key="detected_at", freq="1min"), "alert_type"])
             .size()
-            .reset_index(name="count")
+            .reset_index()
+            .rename(columns={0: "count"})
         )
         fig_area = px.area(
             ts, x="detected_at", y="count", color="alert_type",
@@ -193,32 +194,42 @@ with col_right:
         fig_area.update_layout(
             margin=dict(t=0, b=30, l=30, r=0),
             paper_bgcolor="rgba(0,0,0,0)",
-            legend_title_text="Alert Type",
+            plot_bgcolor="rgba(0,0,0,0)",
+            font=dict(color="#A6ADC8"),
+            xaxis=dict(showgrid=False),
+            yaxis=dict(showgrid=True, gridcolor="#313244"),
         )
         st.plotly_chart(fig_area, use_container_width=True)
     else:
-        st.info("No alerts yet — start producer + consumer.")
+        st.info("No alert volume data.")
 
 st.divider()
 
-# ── Row 3: Alert type breakdown + Token heatmap ────
+# ── Row 3: Token breakdown + Alert types ────────────
 c1, c2 = st.columns(2)
+
 with c1:
-    st.subheader("🍩 Alert Type Breakdown")
+    st.subheader("🍩 Alert Type Distribution")
     if not df.empty:
-        counts = df["alert_type"].value_counts().reset_index()
-        counts.columns = ["Type", "Count"]
-        fig_pie = go.Figure(go.Pie(
-            labels=counts["Type"], values=counts["Count"], hole=0.45,
-            marker_colors=["#EF4444", "#F97316", "#EAB308", "#A855F7"],
-        ))
+        type_counts = df["alert_type"].value_counts().reset_index()
+        type_counts.columns = ["Alert Type", "Count"]
+        fig_pie = px.pie(
+            type_counts, values="Count", names="Alert Type",
+            hole=0.4,
+            color="Alert Type",
+            color_discrete_map={
+                "PUMP_AND_DUMP_CONFIRMED": "#EF4444",
+                "CLIQUE_DETECTED":         "#F97316",
+                "STAR_TOPOLOGY":           "#EAB308",
+            },
+        )
         fig_pie.update_layout(margin=dict(t=0, b=0), paper_bgcolor="rgba(0,0,0,0)")
         st.plotly_chart(fig_pie, use_container_width=True)
 
 with c2:
     st.subheader("🪙 Most Targeted Tokens")
     if not df.empty and "pumping_tokens" in df.columns:
-        token_exploded = df["pumping_tokens"].dropna().explode()
+        token_exploded = df.explode("pumping_tokens")["pumping_tokens"].dropna()
         if len(token_exploded) > 0:
             token_counts = token_exploded.value_counts().head(10).reset_index()
             token_counts.columns = ["Token", "Alert Count"]
@@ -241,11 +252,13 @@ st.divider()
 st.subheader("📋 Recent Alerts")
 if not df.empty:
     # Apply sidebar filters
-    filtered = df
-    if severity_filter:
-        filtered = filtered[filtered.get("severity", pd.Series()).isin(severity_filter)]
-    if alert_type_filter:
-        filtered = filtered[filtered.get("alert_type", pd.Series()).isin(alert_type_filter)]
+    mask = pd.Series(True, index=df.index)
+    if severity_filter and "severity" in df.columns:
+        mask = mask & df["severity"].isin(severity_filter)
+    if alert_type_filter and "alert_type" in df.columns:
+        mask = mask & df["alert_type"].isin(alert_type_filter)
+
+    filtered: pd.DataFrame = df.loc[mask]
 
     display_cols = [c for c in [
         "detected_at", "alert_type", "severity", "confidence",

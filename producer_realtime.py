@@ -62,7 +62,7 @@ def make_producer() -> KafkaProducer:
     return KafkaProducer(
         bootstrap_servers=KAFKA_BROKER,
         value_serializer=lambda v: json.dumps(v).encode("utf-8"),
-        key_serializer=lambda k: k.encode("utf-8") if k else None,
+        key_serializer=lambda k: str(k).encode("utf-8") if k is not None else b"",
     )
 
 # ──────────────────────────────────────────────────────────
