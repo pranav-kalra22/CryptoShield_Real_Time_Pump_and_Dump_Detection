@@ -1,0 +1,27 @@
+# Auto-detect text files and perform LF normalization on checkout
+* text=auto
+
+# Ensure shell scripts always have LF endings even on Windows checkouts
+*.sh text eol=lf
+
+# Windows batch files must retain CRLF endings
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Source code files
+*.py text diff=python
+*.json text
+*.yml text
+*.yaml text
+*.md text
+
+# Data & CSV files
+*.csv text eol=lf
+
+# Binary files
+*.pdf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary

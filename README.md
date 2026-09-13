@@ -1,12 +1,14 @@
 # 🛡️ CryptoShield — Real-Time Crypto Pump-and-Dump Detection
 
 [![CI Pipeline](https://github.com/pranav-kalra22/CryptoShield_Real_Time_Pump_and_Dump_Detection/actions/workflows/ci.yml/badge.svg)](https://github.com/pranav-kalra22/CryptoShield_Real_Time_Pump_and_Dump_Detection/actions)
+[![CodeQL](https://github.com/pranav-kalra22/CryptoShield_Real_Time_Pump_and_Dump_Detection/actions/workflows/codeql.yml/badge.svg)](https://github.com/pranav-kalra22/CryptoShield_Real_Time_Pump_and_Dump_Detection/actions/workflows/codeql.yml)
 [![Python](https://img.shields.io/badge/Python-3.10%20%7C%203.11%20%7C%203.12-3776AB?logo=python&logoColor=white)](https://python.org)
 [![Apache Spark](https://img.shields.io/badge/Apache_Spark-4.1.1-E25A1C?logo=apachespark&logoColor=white)](https://spark.apache.org/)
 [![Apache Kafka](https://img.shields.io/badge/Apache_Kafka-3.x-231F20?logo=apachekafka&logoColor=white)](https://kafka.apache.org/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-6.0-47A248?logo=mongodb&logoColor=white)](https://www.mongodb.com/)
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.35-FF4B4B?logo=streamlit&logoColor=white)](https://streamlit.io/)
 [![Docker](https://img.shields.io/badge/Docker-Enabled-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)
+[![Dependabot](https://img.shields.io/badge/Dependabot-Active-blue?logo=dependabot&logoColor=white)](https://github.com/pranav-kalra22/CryptoShield_Real_Time_Pump_and_Dump_Detection/network/updates)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 An enterprise-grade, distributed streaming analytics pipeline designed to detect coordinated cryptocurrency **Pump-and-Dump (P&D)** market manipulation in real time. **CryptoShield** couples high-throughput message streaming with graph topology mining and multi-signal price correlation to identify fraud syndicates before retail investors suffer catastrophic losses.
@@ -233,6 +235,16 @@ All components support dynamic configuration via `.env` or system environment va
 | `STAR_MIN_DEGREE` | `10` | Minimum out-degree for star hub detection |
 | `STAR_DEGREE_RATIO` | `0.8` | Out-degree / total-degree ratio for star hub |
 | `COINGECKO_POLL_INTERVAL` | `30` | Seconds between live price polling cycles |
+
+---
+
+## 👥 Community & Contributing
+
+We welcome contributions to CryptoShield! Check out the following resources to get involved:
+
+- **[Contributing Guidelines](CONTRIBUTING.md)** — Setting up local development, running tests, and PR process.
+- **[Security Policy](SECURITY.md)** — Vulnerability reporting and disclosure protocols.
+- **[Code of Conduct](CODE_OF_CONDUCT.md)** — Standards and expectations for community interaction.
 
 ---
 

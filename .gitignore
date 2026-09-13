@@ -59,3 +59,16 @@ $RECYCLE.BIN/
 
 # Docker volumes
 mongo-data/
+
+# Testing & Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Logs
+*.log
+
+# Type checking & Linters
+.mypy_cache/
+.ruff_cache/

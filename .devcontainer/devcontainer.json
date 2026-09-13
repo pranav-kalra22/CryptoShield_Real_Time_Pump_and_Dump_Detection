@@ -1,0 +1,54 @@
+{
+  "name": "CryptoShield Dev Container",
+  "image": "mcr.microsoft.com/devcontainers/python:3.11",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "version": "latest",
+      "enableOnDataRoot": true
+    },
+    "ghcr.io/devcontainers/features/java:1": {
+      "version": "17",
+      "jdk": "temurin"
+    }
+  },
+  "forwardPorts": [8501, 8080, 8082, 9092, 27017, 4040],
+  "portsAttributes": {
+    "8501": {
+      "label": "Streamlit Dashboard",
+      "onAutoForward": "notify"
+    },
+    "8080": {
+      "label": "Kafka UI",
+      "onAutoForward": "silent"
+    },
+    "8082": {
+      "label": "Mongo Express",
+      "onAutoForward": "silent"
+    },
+    "4040": {
+      "label": "Spark Driver UI",
+      "onAutoForward": "silent"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-azuretools.vscode-docker"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "python.testing.unittestArgs": [
+          "-v",
+          "-s",
+          "tests",
+          "-p",
+          "test_*.py"
+        ],
+        "python.testing.unittestEnabled": true
+      }
+    }
+  },
+  "postCreateCommand": "pip install --upgrade pip && pip install -r requirements.txt"
+}
