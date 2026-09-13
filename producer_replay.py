@@ -113,10 +113,14 @@ def load_prices_df(files: list[str]) -> pd.DataFrame:
             df = pd.read_csv(fpath, low_memory=False)
             df.columns = [c.lower().strip().replace(" ", "_") for c in df.columns]
 
-            # Extract coin symbol from filename: "bitcoin_price.csv" → "BITCOIN"
-            basename = os.path.basename(fpath)
-            symbol   = basename.replace("_price.csv", "").replace(".csv", "").upper()
-            df["symbol"] = symbol
+            # Preserve existing ticker symbol column if present; otherwise derive from filename
+            if "symbol" in df.columns and not df["symbol"].isna().all():
+                df["symbol"] = df["symbol"].astype(str).str.upper()
+                symbol = str(df["symbol"].iloc[0])
+            else:
+                basename = os.path.basename(fpath)
+                symbol   = basename.replace("coin_", "").replace("_price", "").replace(".csv", "").upper()
+                df["symbol"] = symbol
 
             dfs.append(df)
             print(f"  ✅  Loaded {symbol:<20} {len(df):>8,} rows  ({fpath})")

@@ -179,15 +179,16 @@ def main():
 
                 # ── Send price candle to Kafka ─────────────
                 candle = {
-                    "event_type":            "price_candle",
-                    "symbol":                symbol,
-                    "price_usd":             price,
-                    "volume_24h_usd":        volume_24h,
-                    "change_24h_pct":        round(change_24h, 4),
-                    "change_since_last_poll": round(poll_change, 4),
-                    "pumping":               is_spike,
-                    "timestamp":             ts,
-                    "source":                "coingecko_live",
+                    "event_type":                 "price_candle",
+                    "symbol":                     symbol,
+                    "price_usd":                  price,
+                    "volume_24h_usd":             volume_24h,
+                    "change_24h_pct":             round(change_24h, 4),
+                    "change_since_last_poll":     round(poll_change, 4),
+                    "change_since_last_poll_pct": round(poll_change, 4),
+                    "pumping":                    is_spike,
+                    "timestamp":                  ts,
+                    "source":                     "coingecko_live",
                 }
                 producer.send(TOPIC_PRICE, key=token_id, value=candle)
 

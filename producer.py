@@ -72,6 +72,7 @@ def organic_interaction() -> dict:
         "timestamp":         datetime.now(timezone.utc).isoformat(),
         "is_bot":            False,
         "pump_signal":       False,
+        "source":            "synthetic_generator",
     }
 
 def bot_ring_interaction() -> dict:
@@ -90,6 +91,7 @@ def bot_ring_interaction() -> dict:
         "timestamp":         datetime.now(timezone.utc).isoformat(),
         "is_bot":            True,
         "pump_signal":       False,
+        "source":            "synthetic_generator",
     }
 
 def pump_coordinator_blast() -> dict:
@@ -107,6 +109,7 @@ def pump_coordinator_blast() -> dict:
         "timestamp":         datetime.now(timezone.utc).isoformat(),
         "is_bot":            True,
         "pump_signal":       True,   # ← ground-truth label
+        "source":            "synthetic_generator",
     }
 
 # ──────────────────────────────────────────────────────────
@@ -146,6 +149,7 @@ def price_candle(pumping: bool = False) -> dict:
         "volume":     volume,
         "pumping":    pumping,    # ground-truth label
         "timestamp":  datetime.now(timezone.utc).isoformat(),
+        "source":     "synthetic_generator",
     }
 
 # ──────────────────────────────────────────────────────────
