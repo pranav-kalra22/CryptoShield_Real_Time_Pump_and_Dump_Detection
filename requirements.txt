@@ -11,7 +11,7 @@ requests==2.32.3
 
 # Distributed Stream Processing
 # Note: PySpark version should match your local or cluster Apache Spark installation
-pyspark==4.1.1
+pyspark==4.2.0
 
 # Database
 pymongo==4.8.0
