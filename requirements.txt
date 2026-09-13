@@ -7,7 +7,7 @@ kafka-python-ng==2.2.3
 
 # Data Simulation & Real-Time Ingestion
 faker==24.0.0
-requests==2.32.3
+requests==2.34.2
 
 # Distributed Stream Processing
 # Note: PySpark version should match your local or cluster Apache Spark installation
